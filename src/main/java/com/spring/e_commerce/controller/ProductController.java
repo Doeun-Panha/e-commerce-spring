@@ -32,6 +32,9 @@ public class ProductController {
 
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
+        product.setDescription(productDetails.getDescription());
+        product.setImageUrl(productDetails.getImageUrl());
+        product.setStockQuantity(productDetails.getStockQuantity());
 
         return repository.save(product);
     }
