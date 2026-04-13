@@ -1,9 +1,6 @@
 package com.spring.e_commerce.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -12,12 +9,13 @@ public class Product {
     private Long id;
     private String name;
     private double price;
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
     private String imageUrl;
     private int stockQuantity;
 
     public Long getId(){return id;}
-    public void setId(){this.id=id;}
+    public void setId(Long id){this.id=id;}
 
     public String getName(){return name;}
     public void setName(String name){this.name=name;}
