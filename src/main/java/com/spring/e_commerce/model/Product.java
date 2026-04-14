@@ -15,6 +15,10 @@ public class Product {
     private int stockQuantity;
     private int lowStockThreshold;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = true)
+    private Category category;
+
     public int getId(){return id;}
     public void setId(int id){this.id=id;}
 
@@ -35,4 +39,7 @@ public class Product {
 
     public int getLowStockThreshold(){return lowStockThreshold;}
     public void setLowStockThreshold(int lowStockThreshold){this.lowStockThreshold=lowStockThreshold;}
+
+    public Category getCategory(){return category;}
+    public void setCategory(Category category){this.category=category;}
 }
