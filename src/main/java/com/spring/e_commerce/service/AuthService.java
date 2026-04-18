@@ -42,6 +42,9 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.findByUsername(request.username()).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
         // 1. Create a new User object
         var user = new User();
         user.setUsername(request.username());
