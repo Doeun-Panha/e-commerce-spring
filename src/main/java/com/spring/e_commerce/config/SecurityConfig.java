@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.GET;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,8 +28,19 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Disable for mobile apps
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Allow login/register
+                        // 1. PUBLIC: Anyone can log in & view
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
+
+                        // 2. PUBLIC VIEWING: Anyone can see the gear
+                        .requestMatchers(GET, "/api/products/**").permitAll()
+                        .requestMatchers(GET, "/api/categories/**").permitAll()
+
+                        // 3. ADMIN ONLY: Only you can change the inventory
+                        .requestMatchers("/api/products/**").hasRole("ADMIN")
+                        .requestMatchers("/api/categories/**").hasRole("ADMIN")
+
+                        // 4. Everything else requires at least a basic login
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

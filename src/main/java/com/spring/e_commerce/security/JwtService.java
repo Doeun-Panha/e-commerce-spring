@@ -1,5 +1,6 @@
 package com.spring.e_commerce.security;
 
+import com.spring.e_commerce.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,7 +28,14 @@ public class JwtService {
 
     // 2. Generate a Token for a user
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+
+        // If userDetails is an instance of our User class, add the role to the JWT
+        if (userDetails instanceof User user) {
+            extraClaims.put("role", user.getRole().name());
+        }
+
+        return generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
